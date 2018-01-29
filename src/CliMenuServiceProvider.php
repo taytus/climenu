@@ -1,10 +1,10 @@
 <?php
 
-namespace Taytus\CliMenu;
+namespace Taytus\climenu;
 
 use Illuminate\Support\ServiceProvider;
 
-class CliMenuServiceProvider extends ServiceProvider
+class ClimenuServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.

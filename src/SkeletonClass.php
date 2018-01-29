@@ -1,6 +1,6 @@
 <?php
 
-namespace Taytus\CliMenu;
+namespace Taytus\climenu;
 
 class SkeletonClass
 {

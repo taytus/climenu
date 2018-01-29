@@ -1,12 +1,12 @@
 {
-    "name": "Taytus/CliMenu",
+    "name": "Taytus/climenu",
     "type": "library",
     "description": ":package_description",
     "keywords": [
         "Taytus",
-        "CliMenu"
+        "climenu"
     ],
-    "homepage": "https://github.com/Taytus/CliMenu",
+    "homepage": "https://github.com/Taytus/climenu",
     "license": "MIT",
     "authors": [
         {
@@ -25,12 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Taytus\\CliMenu\\": "src"
+            "Taytus\\climenu\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Taytus\\CliMenu\\": "tests"
+            "Taytus\\climenu\\": "tests"
         }
     },
     "scripts": {
