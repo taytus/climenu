@@ -1,6 +1,6 @@
 <?php
 
-namespace Taytus\climenu;
+namespace taytus\climenu;
 
 use Illuminate\Support\ServiceProvider;
 
