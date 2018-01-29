@@ -4,6 +4,7 @@ namespace taytus\climenu;
 use Artisan;
 use Illuminate\Support\ServiceProvider;
 use taytus\climenu\commands\climenu;
+use taytus\climenu\commands\ClimenuDisplay;
 
 class ClimenuServiceProvider extends ServiceProvider
 {
@@ -18,7 +19,7 @@ class ClimenuServiceProvider extends ServiceProvider
         include __DIR__.'/routes.php';
         $this->publishes([
             __DIR__ . '/migrations' => $this->app->databasePath() . '/migrations',
-            __DIR__ . '/seeds' =>$this->app->databasePath() . '/seeds'
+        //    __DIR__ . '/seeds' =>$this->app->databasePath() . '/seeds'
 
 
         ], 'migrations');
@@ -34,11 +35,7 @@ class ClimenuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        /*$this->app['climenu']=$this->app->share(function(){
 
-            return new climenu();
-        });
-        */
 
 
         $this->app['climenu']=$this->app->singleton(Climenu::class, function(){
@@ -47,8 +44,9 @@ class ClimenuServiceProvider extends ServiceProvider
         });
 
 
+
         $this->commands(
-            Climenu::class
+            Climenu::class,ClimenuDisplay::class
         );
         //Artisan::call('migrate', array('--path' => 'app/migrations', '--force' => true));
 

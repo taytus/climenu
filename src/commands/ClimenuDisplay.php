@@ -3,22 +3,23 @@
 namespace taytus\climenu\commands;
 
 use Illuminate\Console\Command;
+use taytus\climenu\classes\Cli;
 
-class Climenu extends Command
+class ClimenuDisplay extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'climenu:install';
+    protected $signature = 'climenu:menu';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Installs the package climenu.';
+    protected $description = 'List all the menu options';
 
     /**
      * Create a new command instance.
@@ -37,12 +38,12 @@ class Climenu extends Command
      */
     public function handle()
     {
-        //publish the assets
-        $this->call ('vendor:publish',['--tag'=>'migrations']);
-        //
-        $this->call('migrate');
-        //seed the database
-        $this->call('db:seed',['--class'=>'taytus\climenu\ClimenuSeeder']);
+        //get all the options and list them ordered by created_at
+        $options=Cli::display_main_menu();
+
+        $selection = $this->ask('Please select an option from 1 to 9');
+
+        Cli::process_selection($options[$selection -1]);
 
 
     }

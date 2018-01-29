@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 class ClimenuSeeder extends Seeder{
     public function run(){
         DB::table('taytus_climenu')->insert([
-            'name'=>"first menu option",
+            'label'=>"first menu option",
             'parent_id'=>0,
             'description' => 'My first menu option',
             'created_at' => \Carbon\Carbon::now(),
