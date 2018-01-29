@@ -1,7 +1,7 @@
 <?php
 
 namespace taytus\climenu;
-
+use Artisan;
 use Illuminate\Support\ServiceProvider;
 
 class ClimenuServiceProvider extends ServiceProvider
@@ -15,6 +15,11 @@ class ClimenuServiceProvider extends ServiceProvider
     {
         //
         include __DIR__.'/routes.php';
+        $this->publishes([
+            __DIR__ . '/migrations' => $this->app->databasePath() . '/migrations'
+        ], 'migrations');
+
+
 
     }
 
@@ -25,6 +30,8 @@ class ClimenuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //Artisan::call('migrate', array('--path' => 'app/migrations', '--force' => true));
+
+
     }
 }
