@@ -23,6 +23,7 @@ use Symfony\Component\Console\Application;
 class Cli {
 
         protected static $output;
+        protected static $options;
 
         function __construct($obj){
             self::$output=$obj;
@@ -35,18 +36,35 @@ class Cli {
 
 
         public static function process_selection($item_ID){
+            //clean options
+            self::$options=[];
             //I need to grab the item and see if it has childs or not
             $item=Items::where('id',$item_ID)->first();
 
             if($item->menu){
-                Items::display_menu($item->id);
+
+
+                self::$options=Items::display_menu($item_ID);
+
+                echo "\n\n The ID is ". $item_ID  ."\n\n";
 
                 $answer=self::$output->ask("select something!");
 
-                dd($answer);
+                //now I have to process the users' reponse
+
+                //options contains the IDs of the element listed
+                dd(self::$options);
+
+
+
+               // dd(self::$options, $answer);
+
+
+
 
 
             }else{
+                dd("porn");
                 //if I don't have a menu to display, then excecute the action
                 //associated with that selection
                 $class=$item->class;

@@ -4,6 +4,9 @@ namespace taytus\climenu\commands;
 
 use Illuminate\Console\Command;
 use taytus\climenu\classes\Cli;
+use taytus\climenu\classes\Ask;
+use taytus\climenu\classes\Posta;
+use Symfony\Component\Console\Application;
 
 class ClimenuDisplay extends Command
 {
@@ -38,8 +41,11 @@ class ClimenuDisplay extends Command
      */
     public function handle()
     {
+
         //get all the options and list them ordered by created_at
+
         $options=new Cli($this);
+
         $options=Cli::display_main_menu();
 
         $selection = $this->ask('Please select an option from 1 to 9');
