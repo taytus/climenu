@@ -43,7 +43,7 @@ class ClimenuSeeder extends Seeder{
             'description' => 'Add a new menu entry',
             'class'=>$class,
             'method'=>'add_option_to_current_menu',
-            'menu'=>1,
+            'menu'=>0,
             'created_at' => $now,
             'updated_at' =>$now
         ]);
@@ -53,7 +53,7 @@ class ClimenuSeeder extends Seeder{
             'description' => 'Select an option to edit it',
             'class'=>$class,
             'method'=>'edit_option_from_current_menu',
-            'menu'=>1,
+            'menu'=>0,
             'created_at' => $now,
             'updated_at' =>$now
         ]);
@@ -63,9 +63,43 @@ class ClimenuSeeder extends Seeder{
             'description' => 'Select and delete an entry from Current Menu',
             'class'=>$class,
             'method'=>'delete_option_from_current_menu',
+            'menu'=>0,
+            'created_at' => $now,
+            'updated_at' =>$now
+        ]);
+        DB::table($table)->insert([
+            'label'=>"Empty menu option",
+            'parent_id'=>1,
+            'description' => 'This is an option only to test EMPTY menues',
+            'class'=>$class,
+            'method'=>'not_available',
             'menu'=>1,
             'created_at' => $now,
             'updated_at' =>$now
         ]);
+
+        ///system menu for when an item is marked as menu but it has no items
+
+        DB::table($table)->insert([
+            'label'=>"Add a new option",
+            'parent_id'=>500,
+            'description' => 'Add a new menu entry to an empty menu',
+            'class'=>$class,
+            'method'=>'add_option_to_current_menu',
+            'menu'=>0,
+            'created_at' => $now,
+            'updated_at' =>$now
+        ]);
+        DB::table($table)->insert([
+            'label'=>"Change the Item type to Non-Menu-Item",
+            'parent_id'=>500,
+            'description' => 'The element won\'t be considerated a Menu entry',
+            'class'=>$class,
+            'method'=>'change_menu_item_to_non_menu',
+            'menu'=>0,
+            'created_at' => $now,
+            'updated_at' =>$now
+        ]);
+
     }
 }
