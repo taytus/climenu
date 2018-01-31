@@ -44,9 +44,11 @@ class ClimenuDisplay extends Command
 
         //get all the options and list them ordered by created_at
 
-        $menu=new Cli($this);
+        $menu=new Cli();
+        //this variable is what let me ASK from the other class
+        $menu->setOutput($this);
 
-        $menu::display_main_menu();
+        $menu->display_main_menu();
         //options is an array with IDs
 
 
@@ -55,7 +57,7 @@ class ClimenuDisplay extends Command
 
        // dd(Cli::getMaxSelectionLimit(), $selection);
 
-        $menu::validate_selection($selection);
+        $menu->validate_selection($selection);
         //Cli::process_selection($selection);
 
        /*
