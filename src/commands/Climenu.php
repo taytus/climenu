@@ -3,6 +3,7 @@
 namespace taytus\climenu\commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Schema;
 
 class Climenu extends Command
 {
@@ -37,12 +38,19 @@ class Climenu extends Command
      */
     public function handle()
     {
+        $table='taytus_climenu';
         //publish the assets
-        $this->call ('vendor:publish',['--tag'=>'migrations']);
         //
+        if (Schema::hasTable($table)) {
+            Schema::drop($table);
+        }
+
+        $this->call ('vendor:publish',['--tag'=>'migrations']);
+
         $this->call('migrate');
         //seed the database
-        $this->call('db:seed',['--class'=>'taytus\climenu\ClimenuSeeder']);
+
+         $this->call('db:seed',['--class'=>'taytus\climenu\ClimenuSeeder']);
 
 
     }

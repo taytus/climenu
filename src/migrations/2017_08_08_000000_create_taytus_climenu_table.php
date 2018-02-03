@@ -12,6 +12,7 @@ class CreateTaytusClimenuTable extends Migration
             $table->string('label',100);
             $table->string('method',255)->default("");
             $table->string('class',255)->default("");
+            $table->string('params',255)->default("");
             $table->integer("parent_id")->default(0);
             $table->string("description",255)->default("");
             $table->boolean('menu')->default(0);

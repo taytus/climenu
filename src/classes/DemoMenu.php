@@ -2,17 +2,11 @@
 
 namespace taytus\climenu\classes;
 
-
-
 use taytus\climenu\src\models\Items;
 use ReflectionMethod;
 
 
-
-
-
-
-class Cli {
+class DemoMenu {
 
         protected  $output;
         protected  $ids;
@@ -38,8 +32,8 @@ class Cli {
             system('clear');
             $this->parent_id=0;
             $this->current_menu_id=0;
-            return $this->top_menu();
-        }
+            $this->redraw_menu();
+    }
 
 
         public  function validate_selection($selection){
@@ -56,9 +50,8 @@ class Cli {
                     //now that the selection is a valid option,
                     //I need to update parent_menu_id and current_menu_id
                     $this->parent_id=$this->current_menu_id;
-                    $this->current_menu_id=$this->ids[$selection-1];
 
-                    $this->process_selection($this->current_menu_id);
+                    $this->process_selection($this->ids[$selection-1]);
 
                 }
             }else{
@@ -76,6 +69,8 @@ class Cli {
 
             if($item->menu){
 
+                $this->current_menu_id=$item_ID;
+                dd($this->current_menu_id, "^^^^^^^^^^");
 
                 $this->redraw_menu();
 
@@ -83,7 +78,7 @@ class Cli {
             }else{
                 //if I don't have a menu to display, then execute the action
                 //associated with that selection
-                $this->execute_method($item->class,$item->method);
+                $this->execute_method($item->class,$item->method,$item->params);
                //
             }
 
@@ -91,14 +86,28 @@ class Cli {
         }
         //check if the method is static or notto determine how to call it
 
-        public  function execute_method($class,$method){
-            $MethodChecker = new ReflectionMethod($class,$method);
-            if($MethodChecker->isStatic()){
-                $new_class= new $class;
-                call_user_func(array($new_class,$method));
+        public  function execute_method($class,$method,$params){
+ //          dd($class,$method);
+
+            //check if method exists
+            if(method_exists($class,$method)) {
+                $MethodChecker = new ReflectionMethod($class, $method);
+                if ($MethodChecker->isStatic()) {
+                    $new_class = new $class;
+                    call_user_func(array($new_class, $method),$params);
+                } else {
+                    call_user_func(array($class, $method),$params);
+                }
             }else{
-                call_user_func(array($class,$method));
+                $this->error_message= "The method \"".$method."\" in the class " . $class . " doesn't exist\n";
+                $this->redraw_menu();
             }
+        }
+        public function print($string=null){
+
+            echo "****************\n";
+            echo $string."\n";
+            echo "****************\n";
         }
         /*
          * Based on current IDs I can get the parent menu and display it again
@@ -170,12 +179,11 @@ class Cli {
         return $this->display_menu(0);
 
     }
-    public  function display_menu($item_ID){
+    public  function display_menu($parent_item_ID){
 
 
-        $records= Items::where('parent_id','=',$item_ID)->orderBy('created_at','asc')->get();
+        $records= Items::where('parent_id','=',$parent_item_ID)->orderBy('created_at','asc')->get();
 
-        //if(count($records)==0)dd($records);
 
         //an element can be listed as menu but not have menu items.
         //here I check and ask if they want to add items, change the item type or cancel operations
@@ -183,7 +191,7 @@ class Cli {
         if(count($records)==0){
             $records= Items::where('parent_id','=',500)->orderBy('created_at','asc')->get();
             echo "The menu you selected is an EMPTY menu\n";
-            $this->empty_menu_id=$item_ID;
+            $this->empty_menu_id=$parent_item_ID;
             echo "Select an option from the menu below\n\n";
         }
 
@@ -246,6 +254,10 @@ class Cli {
         $this->go_back_to_previous_menu();
     }
     public function redraw_menu($validate=true){
+
+        echo "\n current menu id = ".$this->current_menu_id."\n";
+        echo "\n current PARENT menu id = ".$this->parent_id ."\n\n";
+        echo "\n\n";
 
         $this->display_menu($this->current_menu_id);
         $selection=$this->output->ask("Select an Option");

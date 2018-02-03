@@ -11,35 +11,58 @@ class ClimenuSeeder extends Seeder{
 
         $table='taytus_climenu';
         $now=\Carbon\Carbon::now();
+        $demo_class='taytus\climenu\classes\DemoMenu';
         $class='taytus\climenu\classes\Cli';
 
-
         DB::table($table)->insert([
-            'label'=>"Edit Current Menu",
+            'label'=>"Red",
             'parent_id'=>0,
-            'description' => 'You can create/update/delete options',
-            'class'=>$class,
-            'method'=>'edit_current_menu',
-            'menu'=>1,
+            'description' => 'Example menu, just prints out the word Red',
+            'class'=>$demo_class,
+            'method'=>'print',
+            'params'=>'red',
+            'menu'=>0,
+            'created_at' => $now,
+            'updated_at' =>$now
+        ]);
+        DB::table($table)->insert([
+            'label'=>"Blue",
+            'parent_id'=>0,
+            'description' => 'Example menu, just prints out the word Blue',
+            'class'=>$demo_class,
+            'method'=>'print',
+            'params'=>'blue',
+            'menu'=>0,
+            'created_at' => $now,
+            'updated_at' =>$now
+        ]);
+        DB::table($table)->insert([
+            'label'=>"White",
+            'parent_id'=>0,
+            'description' => 'Example menu, just prints out the word White',
+            'class'=>$demo_class,
+            'method'=>'print',
+            'params'=>'white',
+            'menu'=>0,
             'created_at' => $now,
             'updated_at' =>$now
         ]);
 
-        DB::table('taytus_climenu')->insert([
-            'label'=>"Delete Current Menu",
-            'parent_id'=>0,
-            'description' => 'Deletes all the options for this menu',
-            'class'=>$class,
-            'method'=>'delete_current_menu',
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
+
+
+
+
+
+
+
+
+
 
         //options for editing the current menu
 
         DB::table($table)->insert([
             'label'=>"Add a new option",
-            'parent_id'=>1,
+            'parent_id'=>500,
             'description' => 'Add a new menu entry',
             'class'=>$class,
             'method'=>'add_option_to_current_menu',
@@ -82,7 +105,7 @@ class ClimenuSeeder extends Seeder{
 
         DB::table($table)->insert([
             'label'=>"Add a new option",
-            'parent_id'=>500,
+            'parent_id'=>700,
             'description' => 'Add a new menu entry to an empty menu',
             'class'=>$class,
             'method'=>'add_option_to_current_menu',
