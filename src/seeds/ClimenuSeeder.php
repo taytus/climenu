@@ -11,15 +11,15 @@ class ClimenuSeeder extends Seeder{
 
         $table='taytus_climenu';
         $now=\Carbon\Carbon::now();
-        $demo_class='taytus\climenu\classes\DemoMenu';
+        $demo_class= 'taytus\climenu\classes\DemoMenu';
         $class='taytus\climenu\classes\Cli';
 
         DB::table($table)->insert([
             'label'=>"Red",
             'parent_id'=>0,
-            'description' => 'Example menu, just prints out the word Red',
+            'description' => 'Example menu, just printing out the word Red',
             'class'=>$demo_class,
-            'method'=>'print',
+            'method'=>'printing',
             'params'=>'red',
             'menu'=>0,
             'created_at' => $now,
@@ -28,9 +28,9 @@ class ClimenuSeeder extends Seeder{
         DB::table($table)->insert([
             'label'=>"Blue",
             'parent_id'=>0,
-            'description' => 'Example menu, just prints out the word Blue',
+            'description' => 'Example menu, just printing out the word Blue',
             'class'=>$demo_class,
-            'method'=>'print',
+            'method'=>'printing',
             'params'=>'blue',
             'menu'=>0,
             'created_at' => $now,
@@ -39,20 +39,14 @@ class ClimenuSeeder extends Seeder{
         DB::table($table)->insert([
             'label'=>"White",
             'parent_id'=>0,
-            'description' => 'Example menu, just prints out the word White',
+            'description' => 'Example menu, just printing out the word White',
             'class'=>$demo_class,
-            'method'=>'print',
+            'method'=>'printing',
             'params'=>'white',
             'menu'=>0,
             'created_at' => $now,
             'updated_at' =>$now
         ]);
-
-
-
-
-
-
 
 
 

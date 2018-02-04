@@ -3,11 +3,7 @@
 namespace taytus\climenu\commands;
 
 use Illuminate\Console\Command;
-use taytus\climenu\classes\Cli;
-use taytus\climenu\classes\Ask;
 use taytus\climenu\classes\DemoMenu;
-use taytus\climenu\classes\Posta;
-use Symfony\Component\Console\Application;
 
 class ClimenuDisplay extends Command
 {
@@ -45,31 +41,10 @@ class ClimenuDisplay extends Command
 
         //get all the options and list them ordered by created_at
 
-        $menu=new DemoMenu();
-        //this variable is what let me ASK from the other class
-        $menu->setOutput($this);
-
+        $menu=new DemoMenu($this);
         $menu->display_main_menu();
 
 
-
-
-
-        dd("END FROM CliMenuDisplay");
-        $menu->display_main_menu();
-        //options is an array with IDs
-
-
-
-        $selection = $this->ask('Please select an option from 1 to 9');
-
-       // dd(Cli::getMaxSelectionLimit(), $selection);
-
-        $menu->validate_selection($selection);
-        //Cli::process_selection($selection);
-
-       /*
-       */
 
 
     }

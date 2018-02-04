@@ -13,4 +13,9 @@ class Items extends Model
     protected $options;
 
 
+    public function get_label_from_id($id){
+        $obj=self::where('id',$id)->first()->toArray();
+        return $obj['label'];
+    }
+
 }

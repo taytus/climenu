@@ -32,72 +32,75 @@ class Cli {
     public function setOutput($output)
     {
         $this->output = $output;
+
+    }
+    public function setup_main_menu($parent_id,$current_menu_id,$output){
+        $this->parent_id=$parent_id;
+        $this->current_menu_id=$current_menu_id;
+        $this->setOutput($output);
     }
 
-        public  function display_main_menu(){
-            system('clear');
-            $this->parent_id=0;
-            $this->current_menu_id=0;
-            return $this->top_menu();
-        }
 
 
-        public  function validate_selection($selection){
 
-            if(is_numeric($selection)) {
+    public  function validate_selection($selection){
 
-                if ($selection > $this->max_selection_limit) {
-                    $this->error_message= "Select a number between 1 and ". $this->max_selection_limit ."\n";
+        if(is_numeric($selection)) {
 
-                    $this->redraw_menu();
-
-                } else {
-                    $this->error_message=null;
-                    //now that the selection is a valid option,
-                    //I need to update parent_menu_id and current_menu_id
-                    $this->parent_id=$this->current_menu_id;
-                    $this->current_menu_id=$this->ids[$selection-1];
-
-                    $this->process_selection($this->current_menu_id);
-
-                }
-            }else{
-                $this->error_message= "No alphabetic values allowed. Please select a number between 1 and ". $this->max_selection_limit ."\n";
-
-                $this->redraw_menu(false);
-
-            }
-        }
-        public function process_selection($item_ID){
-
-        //I need to grab the item and see if it has childs or not
-            $item=Items::where('id',$item_ID)->first();
-
-
-            if($item->menu){
-
+            if ($selection > $this->max_selection_limit) {
+                $this->error_message= "Select a number between 1 and ". $this->max_selection_limit ."\n";
 
                 $this->redraw_menu();
 
+            } else {
+                $this->error_message=null;
+                //now that the selection is a valid option,
+                //I need to update parent_menu_id and current_menu_id
+                $this->parent_id=$this->current_menu_id;
+                $this->current_menu_id=$this->ids[$selection-1];
 
-            }else{
-                //if I don't have a menu to display, then execute the action
-                //associated with that selection
-                $this->execute_method($item->class,$item->method);
-               //
+                $this->process_selection($this->current_menu_id);
+
             }
+        }else{
+            $this->error_message= "No alphabetic values allowed. Please select a number between 1 and ". $this->max_selection_limit ."\n";
 
+            $this->redraw_menu(false);
 
         }
+    }
+    public function process_selection($item_ID){
+
+    //I need to grab the item and see if it has childs or not
+        $item=Items::where('id',$item_ID)->first();
+
+
+        if($item->menu){
+
+
+            $this->redraw_menu();
+
+
+        }else{
+            //if I don't have a menu to display, then execute the action
+            //associated with that selection
+            $this->execute_method($item->class,$item->method,$item_ID);
+           //
+        }
+
+
+    }
         //check if the method is static or notto determine how to call it
 
-        public  function execute_method($class,$method){
+        public  function execute_method($class,$method,$params){
             $MethodChecker = new ReflectionMethod($class,$method);
-            if($MethodChecker->isStatic()){
-                $new_class= new $class;
-                call_user_func(array($new_class,$method));
+
+            if(!$MethodChecker->isStatic()){
+                $new_class= new $class ($this->output);
+
+                call_user_func(array($new_class,$method),$params);
             }else{
-                call_user_func(array($class,$method));
+                call_user_func(array($class,$method),$params);
             }
         }
         /*
@@ -165,13 +168,9 @@ class Cli {
      */
 
 
-    public function top_menu(){
 
-        return $this->display_menu(0);
-
-    }
     public  function display_menu($item_ID){
-
+        
 
         $records= Items::where('parent_id','=',$item_ID)->orderBy('created_at','asc')->get();
 
@@ -246,7 +245,6 @@ class Cli {
         $this->go_back_to_previous_menu();
     }
     public function redraw_menu($validate=true){
-
         $this->display_menu($this->current_menu_id);
         $selection=$this->output->ask("Select an Option");
 
