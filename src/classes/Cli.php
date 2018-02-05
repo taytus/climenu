@@ -34,10 +34,11 @@ class Cli {
         $this->output = $output;
 
     }
-    public function setup_main_menu($parent_id,$current_menu_id,$output){
-        $this->parent_id=$parent_id;
-        $this->current_menu_id=$current_menu_id;
+    public function setup_main_menu($output){
         $this->setOutput($output);
+        $this->parent_id=0;
+        $this->current_menu_id=0;
+
     }
 
 

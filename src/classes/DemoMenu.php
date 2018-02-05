@@ -27,7 +27,7 @@ class DemoMenu
         system('clear');
 
         $this->Cli=new Cli();
-        $this->Cli->setup_main_menu(0,0,$this->output);
+        $this->Cli->setup_main_menu($this->output);
         $this->Cli->redraw_menu();
     }
 
