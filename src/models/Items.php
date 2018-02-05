@@ -14,7 +14,7 @@ class Items extends Model
     protected $options;
 
 
-    public function get_field_from_id($id,$field){
+    public static function get_field_from_id($id,$field){
 
         $obj=self::where('id','=',$id)->first([$field]);
 

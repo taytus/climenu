@@ -5,8 +5,7 @@ namespace taytus\climenu\classes;
 use taytus\climenu\src\models\Items;
 
 
-class DemoMenu
-{
+class AdminMenu{
 
     protected $output;
     protected $ids;
@@ -25,18 +24,17 @@ class DemoMenu
 
     public function display_main_menu(){
         system('clear');
-
         $this->Cli=new Cli();
-        $this->Cli->setup_main_menu($this->output);
+        $this->Cli->setup_admin_menu($this->output);
         $this->Cli->redraw_menu();
     }
 
     //this is the method assigned to this menu.
     //check the class and method fields in the DB.
 
-    public  function printing($item_id){
+    public  function create_new_menu($parent_id){
 
-        $obj=Items::get_field_from_id($item_id,'label');
+        $obj=$this->Items->get_field_from_id($parent_id,'label');
 
         echo "****************\n";
         echo $obj . "\n";

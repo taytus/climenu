@@ -13,6 +13,7 @@ class ClimenuSeeder extends Seeder{
         $now=\Carbon\Carbon::now();
         $demo_class= 'taytus\climenu\classes\DemoMenu';
         $class='taytus\climenu\classes\Cli';
+        $admin='taytus\climenu\classes\AdminMenu';
 
         DB::table($table)->insert([
             'label'=>"Red",
@@ -48,7 +49,28 @@ class ClimenuSeeder extends Seeder{
             'updated_at' =>$now
         ]);
 
-
+///ADMIN OPTIONS
+        DB::table($table)->insert([
+            'label'=>"Create a New Menu",
+            'parent_id'=>900,
+            'description' => 'Creates a new Menu',
+            'class'=>$admin,
+            'method'=>'create_new_menu',
+            'menu'=>1,
+            'created_at' => $now,
+            'updated_at' =>$now
+        ]);
+        ///ADMIN OPTIONS
+        DB::table($table)->insert([
+            'label'=>"Edit Existent Menu",
+            'parent_id'=>900,
+            'description' => 'CRUD Options for Existent menues',
+            'class'=>$admin,
+            'method'=>'crud_menu',
+            'menu'=>1,
+            'created_at' => $now,
+            'updated_at' =>$now
+        ]);
 
 
 
@@ -117,6 +139,11 @@ class ClimenuSeeder extends Seeder{
             'created_at' => $now,
             'updated_at' =>$now
         ]);
+
+
+
+
+
 
     }
 }

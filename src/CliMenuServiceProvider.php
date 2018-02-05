@@ -5,6 +5,7 @@ use Artisan;
 use Illuminate\Support\ServiceProvider;
 use taytus\climenu\commands\climenu;
 use taytus\climenu\commands\ClimenuDisplay;
+use taytus\climenu\commands\ClimenuAdmin;
 
 class ClimenuServiceProvider extends ServiceProvider
 {
@@ -46,7 +47,8 @@ class ClimenuServiceProvider extends ServiceProvider
 
 
         $this->commands(
-            Climenu::class,ClimenuDisplay::class
+            Climenu::class,ClimenuDisplay::class,ClimenuAdmin::class
+
         );
         //Artisan::call('migrate', array('--path' => 'app/migrations', '--force' => true));
 

@@ -38,7 +38,11 @@ class Cli {
         $this->setOutput($output);
         $this->parent_id=0;
         $this->current_menu_id=0;
-
+    }
+    public function setup_admin_menu($output){
+        $this->setOutput($output);
+        $this->parent_id=0;
+        $this->current_menu_id=900;
     }
 
 
@@ -72,6 +76,7 @@ class Cli {
     }
     public function process_selection($item_ID){
 
+        echo "DEBUG [process_selection] = ITEM_ID = ".$item_ID."\n\n";
     //I need to grab the item and see if it has childs or not
         $item=Items::where('id',$item_ID)->first();
 
@@ -95,9 +100,18 @@ class Cli {
 
         public  function execute_method($class,$method,$params){
             $MethodChecker = new ReflectionMethod($class,$method);
+            //dd($MethodChecker->isStatic());
 
             if(!$MethodChecker->isStatic()){
-                $new_class= new $class ($this->output);
+                //check if the class is different than current class
+                if(get_class($this)!=$class) {
+
+                    $new_class = new $class ($this->output);
+                }else{
+                    $new_class=$this;
+                    echo "I DIDN'T CREATE A NEW CLASS\n";
+                    echo "DEBUG... ".get_class($this)."  ".$method."\n\n";
+                }
 
                 call_user_func(array($new_class,$method),$params);
             }else{
@@ -169,11 +183,11 @@ class Cli {
      */
 
 
-
-    public  function display_menu($item_ID){
+    //lists all the Items with parent_id=$parent_id
+    public  function display_menu($parent_id){
         
 
-        $records= Items::where('parent_id','=',$item_ID)->orderBy('created_at','asc')->get();
+        $records= Items::where('parent_id','=',$parent_id)->orderBy('created_at','asc')->get();
 
         //if(count($records)==0)dd($records);
 
@@ -183,7 +197,7 @@ class Cli {
         if(count($records)==0){
             $records= Items::where('parent_id','=',500)->orderBy('created_at','asc')->get();
             echo "The menu you selected is an EMPTY menu\n";
-            $this->empty_menu_id=$item_ID;
+            $this->empty_menu_id=$parent_id;
             echo "Select an option from the menu below\n\n";
         }
 
@@ -235,17 +249,30 @@ class Cli {
     public  function setId_item($item){
         $this->ids[]=$item;
     }
-    public function change_menu_item_to_non_menu()
-    {
+    public function change_menu_item_to_non_menu($params=null){
+
+
+        if(is_null($this->empty_menu_id))$this->empty_menu_id=$this->current_menu_id;
+
 
         $item = Items::find($this->empty_menu_id);
         $item->menu = 0;
         $item->save();
 
+        $this->current_menu_id=Items::get_field_from_id($this->empty_menu_id,'parent_id');
+
+        //dd($this->current_menu_id);
+
         $this->empty_menu_id = null;
-        $this->go_back_to_previous_menu();
+
+        $this->redraw_menu();
+        //$this->go_back_to_previous_menu();
+
     }
+
+    //send the parent_id to display menu
     public function redraw_menu($validate=true){
+
         $this->display_menu($this->current_menu_id);
         $selection=$this->output->ask("Select an Option");
 
