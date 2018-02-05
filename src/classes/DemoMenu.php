@@ -34,10 +34,9 @@ class DemoMenu
     //this is the method assigned to this menu.
     //check the class and method fields in the DB.
 
-    public  function printing($item_id)
-    {
+    public  function printing($item_id){
 
-        $obj=$this->Items->get_label_from_id($item_id);
+        $obj=$this->Items->get_field_from_id($item_id,'label');
 
         echo "****************\n";
         echo $obj . "\n";

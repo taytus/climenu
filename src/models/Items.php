@@ -10,12 +10,15 @@ class Items extends Model
     protected static $ids=[];
 
 
+
     protected $options;
 
 
-    public function get_label_from_id($id){
-        $obj=self::where('id',$id)->first()->toArray();
-        return $obj['label'];
+    public function get_field_from_id($id,$field){
+
+        $obj=self::where('id','=',$id)->first([$field]);
+
+        return $obj->$field;
     }
 
 }
